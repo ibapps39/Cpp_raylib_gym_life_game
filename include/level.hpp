@@ -7,9 +7,13 @@ typedef struct Level_type
     Texture2D background;
 } Level;
 
-std::map<std::string, Level> Levels;
+extern std::map<std::string, Level> Levels;
 
-Level load_level(std::string level_name, std::unique_ptr<std::map<std::string, Level>> levels)
+Level get_level(std::string level_name, std::map<std::string, Level> levels = Levels)
 {
-    return levels->at(level_name);
+    return levels.at(level_name);
+}
+Texture2D get_level_background(std::string level_name, std::map<std::string, Level> levels)
+{
+    return levels.at(level_name).background;
 }

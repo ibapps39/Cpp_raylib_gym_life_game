@@ -7,13 +7,10 @@
 #include <map>
 
 
-
 class Game
 {
 private:
-    Texture2D portrait;
-    Texture2D map;
-    char *player_name;
+    std::string player_name;
     Camera2D cam;
     Vec2 last_spawned_pt;
     PlayerCam p_cam;
@@ -26,12 +23,12 @@ public:
         player = Player();
         p_cam = PlayerCam((Vec2){0,0});
     }
-    Game(char *name)
+    Game(std::string name)
     {
         // Player player = new Player; // maybe in the future
         player = Player();
+        player.set_name(name);
         p_cam = PlayerCam((Vec2){0,0});
         
     }
-
 }

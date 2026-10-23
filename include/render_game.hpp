@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common.hpp"
-#include "level.hpp"
+#include "composer.hpp"
 
 static constexpr int DEFAULT_INTERNAL_RENDER_RESOLUTION_X = 600;
 static constexpr int DEFAULT_INTERNAL_RENDER_RESOLUTION_Y = 600;
@@ -17,15 +17,11 @@ RenderTexture2D render_setup(const float render_w, const float render_h)
     return render_tx;
 }
 
-void compose_master_render(const RenderTexture2D master_texture, const Level level, const Player player)
+void compose_master_render(const RenderTexture2D master_texture, Composer compose)
 {
     BeginTextureMode(master_texture);
     ClearBackground(BLACK);
-    // stuff you want in the master texture
-    // map
-    DrawTexture(level.background, 0, 0, WHITE);
-    // player
-    DrawTexture(player.player_texture, player.pos.x, player.pos.y, WHITE);
+    
     EndTextureMode();
 }
 
