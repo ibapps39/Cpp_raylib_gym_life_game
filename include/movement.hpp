@@ -1,7 +1,8 @@
 #pragma once
 #include "common.hpp"
-
-Vec2 move_input()
+namespace movement
+{
+inline Vec2 move_input()
 {
     Vec2 dir = {0};
 
@@ -12,8 +13,9 @@ Vec2 move_input()
     return dir;
 }
 
-Vec2 move(const Vec2 pos, const Vec2 direction_unit_vector, const float speed, const float dt)
+inline Vec2 move(const Vec2 pos, const Vec2 direction_unit_vector, const float speed, const float dt)
 {
     return pos + (direction_unit_vector*(speed*dt));
 }
 
+}

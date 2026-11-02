@@ -1,68 +1,81 @@
 #pragma once
 
 #include "common.hpp"
-#include "composer.hpp"
+#include "player.hpp"
+#include "level.hpp"
+#include "assets.hpp"
 
-static constexpr int DEFAULT_INTERNAL_RENDER_RESOLUTION_X = 600;
-static constexpr int DEFAULT_INTERNAL_RENDER_RESOLUTION_Y = 600;
-static constexpr Vec2 DEFAULT_INTERNAL_RENDER_RESOLUTION = (Vec2){DEFAULT_INTERNAL_RENDER_RESOLUTION_X, DEFAULT_INTERNAL_RENDER_RESOLUTION_Y};
-
-static constexpr int DEFAULT_EXTERNAL_RENDER_RESOLUTION_X = DEFAULT_INTERNAL_RENDER_RESOLUTION_X;
-static constexpr int DEFAULT_EXTERNAL_RENDER_RESOLUTION_Y = DEFAULT_INTERNAL_RENDER_RESOLUTION_Y;
-static constexpr Vec2 DEFAULT_EXTERNAL_RENDER_RESOLUTION = (Vec2){DEFAULT_EXTERNAL_RENDER_RESOLUTION_X, DEFAULT_EXTERNAL_RENDER_RESOLUTION_Y};
-
-RenderTexture2D render_setup(const float render_w, const float render_h)
+typedef struct MASTER_RENDER
 {
-    RenderTexture2D render_tx = LoadRenderTexture(render_w, render_h);
-    return render_tx;
+    Rectangle src;
+    Rectangle dst;
+    RenderTexture2D master_texture;
+} master_render;
+
+namespace render_game
+{
+    void draw(Player &p) {
+        DrawTexture(p.get_body_texture(), p.pos.x, p.pos.y, WHITE);
+    }
+
+    void draw(level_t &l) {
+        DrawTexture(l.background, 0, 0, WHITE);
+    }
+    // master_render.master_texture = render_setup(internal_res.x, internal_res.y);
+    master_render render_setup(const Vec2 internal_res, const Vec2 output_res)
+    {
+        master_render mr;
+        mr.master_texture = LoadRenderTexture(internal_res.x, internal_res.y);
+        mr.src = {
+            .x = 0,
+            .y = 0,
+            .width = internal_res.x,
+            .height = -internal_res.y};
+        mr.dst = {
+            .x = 0,
+            .y = 0,
+            .width = output_res.x,
+            .height = output_res.y};
+        return mr;
+    }
+
+inline void render_update(master_render &mr)
+{
+    EXTERNAL_RENDER_RESOLUTION_X = GetScreenWidth();
+    EXTERNAL_RENDER_RESOLUTION_Y = GetScreenHeight();
+
+    float scale = fminf(
+        (float)GetScreenWidth()  / INTERNAL_RENDER_RESOLUTION.x,
+        (float)GetScreenHeight() / INTERNAL_RENDER_RESOLUTION.y);
+
+        // difference in 
+    float dw = INTERNAL_RENDER_RESOLUTION.x * scale;
+    float dh = INTERNAL_RENDER_RESOLUTION.y * scale;
+
+    mr.dst = {
+        (GetScreenWidth()  - dw) * 0.5f,
+        (GetScreenHeight() - dh) * 0.5f,
+        dw, 
+        dh 
+    };
 }
 
-void compose_master_render(const RenderTexture2D master_texture, Composer compose)
-{
-    BeginTextureMode(master_texture);
-    ClearBackground(BLACK);
-    
-    EndTextureMode();
-}
+    void render(master_render &mr, level_t &loaded_level, Player& player)
+    {
+        if(IsWindowResized()) 
+        {
+            render_update(mr);
+        }
+        // assemble/compose texture
+        BeginTextureMode(mr.master_texture);
+            draw(loaded_level);
+            draw(player);
+        EndTextureMode();
 
-// renders whole game
-void render_master_texture(const float render_w, const float render_h, const RenderTexture2D master_texture)
-{
-    const Rectangle src = {.x = 0, .y = 0, .width = master_texture.texture.width, .height = -(master_texture.texture.height)};
-    const Rectangle dst = {.x = 0, .y = 0, .width = render_w, .height = render_h};
-    DrawTexturePro(master_texture.texture, src, dst, (Vec2){0,0}, 0.0f, WHITE);
-}
-
-class GameRender
-{
-    private:
-        RenderTexture2D master_render;
-        const Vec2 internal_res = DEFAULT_INTERNAL_RENDER_RESOLUTION;
-        Vec2 output_res = DEFAULT_EXTERNAL_RENDER_RESOLUTION;
-    
-        void change_res(const Vec2 new_res)
-        {
-            output_res = new_res;
-        }
-        void render()
-        {
-            render_master_texture(output_res.x, output_res.y, master_render);
-        }
-    public:
-        GameRender() // assumes internal res!
-        {
-            output_res.x = internal_res.x;
-            output_res.y = internal_res.y;
-            master_render = render_setup(output_res.x, output_res.y);
-        }
-        GameRender(const float render_w, const float render_h)
-        {
-            output_res.x = render_w;
-            output_res.y = render_h;
-            master_render = render_setup(output_res.x, output_res.y);
-        }
-        ~GameRender()
-        {
-            UnloadRenderTexture(master_render);
-        }
+        // draw the renderingtexture2d
+        BeginDrawing();
+            ClearBackground(BLACK);
+            DrawTexturePro(mr.master_texture.texture, mr.src, mr.dst, {0, 0}, 0, WHITE);
+        EndDrawing();
+    }
 }

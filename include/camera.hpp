@@ -1,32 +1,20 @@
 #pragma once
 #include "common.hpp"
 
-
-class PlayerCam
+typedef struct PLAYER_CAMERA
 {
-    public:
-    Camera2D camera;
-    PlayerCam()
-    {
-        camera.target = (Vec2){0,0};
-        camera.offset = (Vec2){0,0};
-        camera.rotation = 0.0f;
-        camera.zoom = 1.0f;
-    }
-    PlayerCam(Vec2 player_pos)
-    {
-        camera.target = player_pos;
-        camera.offset = player_pos;
-        camera.rotation = 0.0f;
-        camera.zoom = 1.0f;
-    }
-    void update(Vec2 pos)
-    {
-        camera.target = pos;
-        camera.offset = pos;
-    }
-    void zoom(float zoom)
-    {
-        camera.zoom = zoom;
-    }
-};
+    Camera2D camera =
+    { 
+        .target = (Vec2){0,0},
+        .offset = (Vec2){0,0},
+        .rotation = 0.0f,
+        .zoom = 1.0f
+    };
+} PlayerCam;
+
+
+inline void update(PlayerCam& cam, Vec2 pos)
+{
+    cam.camera.target = pos;
+    cam.camera.offset = pos;
+}
