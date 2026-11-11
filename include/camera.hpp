@@ -5,8 +5,8 @@ typedef struct PLAYER_CAMERA
 {
     Camera2D camera =
     { 
-        .target = (Vec2){0,0},
         .offset = (Vec2){0,0},
+        .target = (Vec2){0,0},
         .rotation = 0.0f,
         .zoom = 1.0f
     };

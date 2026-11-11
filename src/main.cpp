@@ -6,43 +6,36 @@
 
 
 float CAMERA_MOVEMENT_SPEED = 100.0f;
-
+int EXTERNAL_RESOLUTION_X = INTERNAL_RES_X;
+int EXTERNAL_RESOLUTION_Y = INTERNAL_RES_Y;
+Vec2i EXTERNAL_RES = { EXTERNAL_RESOLUTION_X, EXTERNAL_RESOLUTION_Y };
 
 int main(void)
 {
-    int window_w = 600;
-    int window_h = 600;
-    EXTERNAL_RENDER_RESOLUTION_X = window_w;
-    EXTERNAL_RENDER_RESOLUTION_Y = window_h;
-    Vec2 res = (Vec2){1.0f*window_w, 1.0f*window_h};
-    const char* title = "raylib [core] example - camera 3d";
+    const char* title = "MyLife";
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(window_w, window_h, title);
+    InitWindow(EXTERNAL_RESOLUTION_X, EXTERNAL_RESOLUTION_Y, title);
     
+    
+    Player player = player::create("ian");
+    
+    lvl_t TEST_LEVEL = "test";
+    level test_level;
 
-    level_t test_level;
-    test_level.level_info.level_name = "test";
-    test_level.level_info.file_path = get_asset_by_name(LEVEL, test_level.level_info.level_name, ".png");
-    
-    Player player = Player("ian");
-    PlayerCam p_cam;
-    
-    Game g = 
+    Game INSTANCE = 
     {
         .player = player,
         .current_level = test_level,
-        .dt = 0.0f,
-        .mr = render_game::render_setup(res, res)
+        .mr = render_game::render_setup(INTERNAL_RES, EXTERNAL_RES),
+        .dt = 0.0f
     };
-    level::load_level(test_level);
-    level::load_level(g.current_level, test_level);
-
+    // have to call to load the texture properly
+    lvl::load(INSTANCE.current_level, TEST_LEVEL);
     while (!WindowShouldClose())
     {
-        // bool mov_key_down = IsKeyDown(KEY_W) || IsKeyDown(KEY_S) || IsKeyDown(KEY_A) || IsKeyDown(KEY_D);
-        //  g.dt = GetFrameTime();
-         if(IsKeyPressed(KEY_ESCAPE)) break;
-        render_game::render(g.mr, g.current_level, g.player);
+
+        if(IsKeyPressed(KEY_ESCAPE)) break;
+        game::run(INSTANCE);
     }
     CloseWindow();
     return 0;

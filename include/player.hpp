@@ -1,14 +1,14 @@
 #pragma once
 #include "common.hpp"
 #include "assets.hpp"
+#include <array>
 #include <string>
 
 static constexpr unsigned char NUM_STATS = 7;
 static constexpr unsigned char NUM_STATES = 6;
 static constexpr unsigned char NUM_ALLOWABLE_STATES = 2;
 
-
-std::string PLAYER_NAME = "";
+inline std::string PLAYER_NAME = "";
 
 typedef enum STAT
 {
@@ -52,95 +52,75 @@ static constexpr Stat_t MIN_PLAYER_LOVE = 0;
 static constexpr Stat_t MIN_PLAYER_CONFIDENCE = 0;
 static constexpr Stat_t MIN_PLAYER_AROUSAL = 0;
 
-
-// typedef struct PLAYER
-// {
-//     std::string name;
-//     Texture2D portrait;
-//     Texture2D body_texture;
-//     std::array<State, NUM_ALLOWABLE_STATES> states;
-//     std::array<Stat_t, NUM_STATS> stats;
-//     unsigned char frame_count = 0;
-// } Player;
-
-
-class Player
+typedef struct PLAYER
 {
-private:
-   
     std::string name;
     Texture2D portrait;
     Texture2D body_texture;
     std::array<State, NUM_ALLOWABLE_STATES> states;
     std::array<Stat_t, NUM_STATS> stats;
-    unsigned char frame_count = 0;
+    unsigned char frame_count;
+    Vec2 pos;
+} Player;
 
-public:
-    Vec2 pos{0, 0};
-    //std::vector<Texture2D> player_textures;
-
-    Player(std::string name)
-
+namespace player
+{
+    constexpr float body_scalar = 0.17f;
+    constexpr float portrait_scalar = 0.25f;
+    Vec2i player_size = INTERNAL_RES*body_scalar;
+    Vec2i portrait_size = INTERNAL_RES*portrait_scalar;
+    inline Player create(const std::string& name)
     {
-        this->name = name;
-        states.fill(NORAML);
-        stats.fill(100.0f);
-        portrait = LoadTexture(get_asset_by_name(PORTRAIT, name, ".png"));
-        body_texture = LoadTexture(get_asset_by_name(BODY, name, ".png"));
+        Player p;
+        p.name = name;
+        p.states.fill(NORAML);
+        p.stats.fill(100.0f);
+        p.portrait = LoadTexture(PORTRAIT, name, portrait_size.x, portrait_size.y);
+        p.body_texture = LoadTexture(BODY, name, player_size.x, player_size.y);
+        p.pos = {.x = INTERNAL_RES_X/2.0f, .y = INTERNAL_RES_Y/2};
+        return p;
     }
 
-    void set_name(std::string name)
+    inline void destroy(Player& p)
     {
-        this->name = name;
+        UnloadTexture(p.portrait);
+        UnloadTexture(p.body_texture);
     }
-    // unsigned char animate()
-    // {
-    //     if(player_textures.size() <= 0) return 0;
-    //     frame_count = (frame_count + 1) % player_textures.size();
-    //     return frame_count;
-    // }
-    unsigned char get_current_frame()
+
+    inline void set_name(Player& p, const std::string& name)
     {
-        return frame_count;
+        p.name = name;
     }
-    State get_state_val(State state)
+
+    inline unsigned char get_current_frame(const Player& p)
     {
-        return states[state];
+        return p.frame_count;
     }
-    Stat_t get_stat_val(Stat stat)
+
+    inline State get_state_val(const Player& p, unsigned char slot)
     {
-        return stats[stat];
+        return p.states[slot];
     }
-    void set_state_val(unsigned char state, State state_v)
+
+    inline Stat_t get_stat_val(const Player& p, Stat stat)
     {
-        if(state > NUM_ALLOWABLE_STATES-1) return;
-        states[state] = state_v;
+        return p.stats[stat];
     }
-    void set_stat_val(Stat stat, Stat stat_val)
+
+    inline void set_state_val(Player& p, unsigned char slot, State value)
     {
-        if(stat > NUM_STATS-1) return;
-        stats[stat] = stat_val;
+        if (slot > NUM_ALLOWABLE_STATES - 1) return;
+        p.states[slot] = value;
     }
-    void copy(Player& dst, Player& p)
+
+    inline void set_stat_val(Player& p, Stat stat, Stat_t value)
     {
-        dst.name = p.name;
-        dst.portrait = p.portrait;
-        dst.body_texture = p.body_texture;
-        dst.states = p.states;
-        dst.stats = p.stats;
-        dst.frame_count = p.frame_count;
+        if (stat > NUM_STATS - 1) return;
+        p.stats[stat] = value;
     }
-    Texture2D& get_portrait()
+
+    inline void copy(Player& dst, const Player& src)
     {
-        return portrait;
+        dst = src; // struct copy handles every field
     }
-    Texture2D& get_body_texture()
-    {
-        return body_texture;
-    }
-    ~Player()
-    {
-        UnloadTexture(portrait);
-        UnloadTexture(body_texture);
-    }
-};
+}

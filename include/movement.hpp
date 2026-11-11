@@ -2,6 +2,7 @@
 #include "common.hpp"
 namespace movement
 {
+    constexpr int speed = 150;
 inline Vec2 move_input()
 {
     Vec2 dir = {0};

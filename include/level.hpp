@@ -2,37 +2,23 @@
 #include "common.hpp"
 #include <map>
 
-typedef struct LEVEL_INFO
+using lvl_t = std::string;
+
+typedef struct Level 
 {
-    std::string level_name;
-    std::string file_path;
-} level_i;
+    lvl_t name;
+    Texture2D tex;
+} level;
 
-typedef struct LEVEL
+namespace lvl
 {
-    level_i level_info;
-    Texture2D background;
-} level_t;
-
-using lvl = level_t;
-
-namespace level
-{
-
-    void load_level(lvl &dst)
+    void load(level& dst, lvl_t src_lvl_name)
     {
-        Image i = LoadImage(dst.level_info.file_path.c_str());
-        ImageResize(&i, INTERNAL_RENDER_RESOLUTION_X, INTERNAL_RENDER_RESOLUTION_Y);
-        Texture2D t = LoadTextureFromImage(i);
-        dst.background = t;
-        UnloadImage(i);
+        dst.name = src_lvl_name;
+        dst.tex = LoadTexture(LEVEL, src_lvl_name, INTERNAL_RES_X, INTERNAL_RES_Y);
     }
-    void load_level(lvl &dst, lvl &src)
+    void unload(level& l)
     {
-        dst = src;
-    }
-    void unload_level(lvl& l)
-    {
-        UnloadTexture(l.background);
+        UnloadTexture(l.tex);
     }
 }

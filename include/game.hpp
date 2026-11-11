@@ -5,15 +5,25 @@
 #include "player.hpp"
 #include "render_game.hpp"
 #include "level.hpp"
-#include <map>
+
 
 
 typedef struct GAME
 {
     Player player;
-    level_t current_level;
+    level current_level;
     MASTER_RENDER mr;
     float dt;
 } Game;
 
+namespace game 
+{
+    void run(Game& g) 
+    {
+        EXTERNAL_RES = {GetScreenWidth(), GetScreenHeight()};
+        g.dt = GetFrameTime();
+        g.player.pos = movement::move(g.player.pos, movement::move_input(), movement::speed, g.dt);
+        render_game::render(g.mr, g.current_level, g.player);
+    }
+}
 
