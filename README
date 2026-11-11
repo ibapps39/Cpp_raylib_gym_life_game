@@ -1,0 +1,113 @@
+# MyLife
+
+A C++ game prototype built with raylib that explores a life-simulation and character-driven gameplay loop. The project focuses on clean game architecture, responsive input, and a modular rendering system while showcasing object-oriented C++ design in a real-time interactive environment.
+
+## Overview
+
+MyLife is a 2D simulation-style game where the player moves through a small world, interacts with a live game scene, and is backed by a character system that tracks multiple life stats such as health, energy, happiness, money, love, confidence, and arousal.
+
+This project is a strong example of:
+
+- C++ game development with a real graphics library
+- Modular software design using structured headers and game systems
+- Real-time rendering and gameplay loop management
+- Player state modeling and simulation-driven design
+- Build automation with Makefile-based workflows
+
+## Key Features
+
+- 2D character movement and camera-aware scene rendering
+- Player data model with multiple life statistics and emotional states
+- Custom game loop and frame-based update logic
+- Simple UI-friendly layout and render setup for game information panels
+- Structured, reusable codebase with separate modules for gameplay, rendering, and assets
+- Build pipeline using C++17 and raylib
+
+## Tech Stack
+
+- C++17
+- raylib
+- Makefile
+- macOS/Linux development workflow
+- Git version control
+
+## Project Structure
+
+```text
+.
+├── include/          # Game headers and system definitions
+├── src/              # Main game source files
+├── build/            # Generated build artifacts
+├── Makefile          # Build configuration
+├── README            # Project documentation
+├── remove-dsstore.sh # Utility script for cleanup
+└── .gitignore
+```
+
+## Gameplay Highlights
+
+The project uses a central game loop to update the player position, process movement input, and render the environment each frame. The code is organized around reusable game systems instead of tightly coupled logic, making it easier to extend the project with new levels, NPCs, interactions, or UI elements.
+
+The player system includes a stat model designed to support simulation-style progression and emotional states, which helps demonstrate how game systems and data-driven design can be combined in C++.
+
+## Getting Started
+
+### Prerequisites
+
+- C++ compiler (g++)
+- raylib installed on your system
+- Make
+
+### Install raylib
+
+On macOS with Homebrew:
+
+```bash
+brew install raylib
+```
+
+### Build and Run
+
+```bash
+git clone https://github.com/ibapps39/Cpp_raylib_gym_life_game.git
+cd Cpp_raylib_gym_life_game
+make
+./build/PROJECT
+```
+
+If needed, update the Makefile path for your local raylib installation.
+
+## Controls
+
+- WASD / Arrow Keys: Move the player
+- Esc: Exit the game
+
+## Why This Project Stands Out
+
+This project demonstrates practical game-engine thinking and production-style C++ organization. It goes beyond a simple demo by showing:
+
+- stateful game design
+- modular code architecture
+- real-time rendering systems
+- cohesive gameplay loop development
+- attention to maintainability and extensibility
+
+For a recruiter or hiring manager, this signals that the developer is comfortable building interactive software, working with performance-sensitive systems, and translating design ideas into functioning C++ applications.
+
+## Future Improvements
+
+Potential next steps include:
+
+- adding enemies, collectibles, or environmental interactions
+- implementing save/load functionality
+- expanding the level system and world design
+- creating richer UI and user-facing menus
+- improving animation, sound, and game balancing
+
+## Summary
+
+MyLife is a polished C++ game prototype that blends technical implementation with a creative and human-centered gameplay concept. It highlights strong fundamentals in systems design, object-oriented programming, and game development—making it a strong project to showcase for technical and creative software roles.
+
+---
+
+Built with passion for game development, systems design, and interactive software.
