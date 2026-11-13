@@ -36,6 +36,22 @@ namespace render_game
     {
         DrawTexture(l.tex, 0,0, WHITE);
     }
+        void draw(const Texture2D sprite_sheet, Player& p, signed char flip)
+    {
+        Rectangle src = {};
+        src.x = p.pos.x;
+        src.y = p.pos.y;
+        src.width = flip*p.body_texture.width;
+        src.height = p.body_texture.height;
+        
+        Rectangle dst = {};
+        dst.x = p.pos.x;
+        dst.y = p.pos.y;
+        dst.width = p.body_texture.width;
+        dst.height = p.body_texture.height;
+        
+        DrawTexturePro(sprite_sheet, src, dst, {0,0}, 0, WHITE);
+    }
     master_render render_setup(const Vec2i internal_res, const Vec2i output_res=EXTERNAL_RES)
     {
         master_render mr;

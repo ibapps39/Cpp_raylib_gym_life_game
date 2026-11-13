@@ -9,17 +9,19 @@
 #define PORTRAIT_PATH "./resources/textures/portraits/"
 #define BODY_PATH "./resources/textures/bodies/"
 #define LEVELS_PATH "./resources/textures/levels/"
+#define SPRITE_SHEET_PATH "./resources/textures/sprite_sheets/"
 
 typedef enum ASSET
 {
     BODY,
     PORTRAIT,
-    LEVEL
+    LEVEL,
+    SPRITE_SHEET
 } Asset_t;
 
 
-static std::array<std::string, 3> asset_t_ext = {"_body", "_portrait", "_level"};
-static std::array<const char *, 3> asset_t_path = {BODY_PATH, PORTRAIT_PATH, LEVELS_PATH};
+static std::array<std::string, 4> asset_t_ext = {"_body", "_portrait", "_level", "_sprite_sheet"};
+static std::array<const char *, 4> asset_t_path = {BODY_PATH, PORTRAIT_PATH, LEVELS_PATH, SPRITE_SHEET_PATH};
 
 inline std::string path_result;
 
@@ -42,3 +44,4 @@ inline Texture2D LoadTexture(Asset_t ast, std::string name, int sx, int sy)
     UnloadImage(img);
     return t;
 }
+
