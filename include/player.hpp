@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "assets.hpp"
+#include "anim.hpp"
 #include <array>
 #include <string>
 
@@ -57,10 +58,15 @@ typedef struct PLAYER
     std::string name;
     Texture2D portrait;
     Texture2D body_texture;
+    Texture2D sprite_sheet;
     std::array<State, NUM_ALLOWABLE_STATES> states;
     std::array<Stat_t, NUM_STATS> stats;
-    unsigned char frame_count;
     Vec2 pos;
+    Rectangle ssr;
+    anim_t current_animation;
+    AnimState frame_state;
+    float width;
+    float height;
 } Player;
 
 namespace player
@@ -77,7 +83,19 @@ namespace player
         p.stats.fill(100.0f);
         p.portrait = LoadTexture(PORTRAIT, name, portrait_size.x, portrait_size.y);
         p.body_texture = LoadTexture(BODY, name, player_size.x, player_size.y);
+        p.sprite_sheet = LoadTexture(SPRITE_SHEET, name, INTERNAL_RES_X, INTERNAL_RES_Y);
         p.pos = {.x = INTERNAL_RES_X/2.0f, .y = INTERNAL_RES_Y/2};
+        // edit
+        Rectangle ssr = {};
+        ssr.x = 0; 
+        ssr.y = 0;
+        ssr.width = 100;
+        ssr.height = 120;
+        p.ssr = ssr;
+        p.current_animation = IDLE;
+        p.frame_state = (AnimState){.frame = 0, .timer = 0};
+        p.width = player_size.x;
+        p.height = player_size.y;
         return p;
     }
 
@@ -85,16 +103,12 @@ namespace player
     {
         UnloadTexture(p.portrait);
         UnloadTexture(p.body_texture);
+        UnloadTexture(p.sprite_sheet);
     }
 
     inline void set_name(Player& p, const std::string& name)
     {
         p.name = name;
-    }
-
-    inline unsigned char get_current_frame(const Player& p)
-    {
-        return p.frame_count;
     }
 
     inline State get_state_val(const Player& p, unsigned char slot)

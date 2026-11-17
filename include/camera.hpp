@@ -12,7 +12,6 @@ typedef struct PLAYER_CAMERA
     };
 } PlayerCam;
 
-
 inline void update(PlayerCam& cam, Vec2 pos)
 {
     cam.camera.target = pos;

@@ -55,3 +55,5 @@ inline constexpr Vec2i DEFAULT_EXTERNAL_RENDER_RESOLUTION = { DEFAULT_EXTERNAL_R
 extern int EXTERNAL_RESOLUTION_X;
 extern int EXTERNAL_RESOLUTION_Y;
 extern Vec2i EXTERNAL_RES;
+
+#define WSAD_DOWN ((IsKeyDown(KEY_W))||(IsKeyDown(KEY_S))||(IsKeyDown(KEY_A))||(IsKeyDown(KEY_D)))

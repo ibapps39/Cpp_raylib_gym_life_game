@@ -1,9 +1,8 @@
 #pragma once
 #include "common.hpp"
-
-
 #include <string>
 #include <array>
+#include <assert.h>
 
 #define TEXTURES_PATH "./resources/textures/"
 #define PORTRAIT_PATH "./resources/textures/portraits/"
@@ -38,10 +37,10 @@ inline const char *get_path(Asset_t type, std::string name, std::string file_ext
 
 inline Texture2D LoadTexture(Asset_t ast, std::string name, int sx, int sy)
 {
+    assert( IsImageValid( LoadImage(get_path(SPRITE_SHEET, "ian", ".png")) ) == true );
     Image img = LoadImage(get_path(ast, name, ".png"));
     ImageResize(&img, sx, sy);
     Texture2D t = LoadTextureFromImage(img);
     UnloadImage(img);
     return t;
 }
-

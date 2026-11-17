@@ -4,6 +4,8 @@
 #include "render_game.hpp"
 #include "assets.hpp"
 
+#include "misc.hpp"
+
 
 float CAMERA_MOVEMENT_SPEED = 100.0f;
 int EXTERNAL_RESOLUTION_X = INTERNAL_RES_X;
@@ -31,11 +33,15 @@ int main(void)
     };
     // have to call to load the texture properly
     lvl::load(INSTANCE.current_level, TEST_LEVEL);
+
+    
     while (!WindowShouldClose())
     {
 
         if(IsKeyPressed(KEY_ESCAPE)) break;
+        
         game::run(INSTANCE);
+        //draw_track_photo();
     }
     CloseWindow();
     return 0;

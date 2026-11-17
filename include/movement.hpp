@@ -1,5 +1,6 @@
 #pragma once
 #include "common.hpp"
+
 namespace movement
 {
     constexpr int speed = 150;
