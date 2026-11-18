@@ -92,9 +92,11 @@ namespace render_game
         BeginTextureMode(mr.master_texture);
         draw(l);
         //draw(player);
-        if(player.dir.y < 0)
-        draw(player.sprite_sheet, player);
-
+        if(player.dir.y >= 0 )
+        { draw(player.sprite_sheet, player); 
+        } else { 
+            draw(player.back_sheet, player); 
+        }
         if (draw_interface) { interface::draw(player); }
         EndTextureMode();
 
