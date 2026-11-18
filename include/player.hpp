@@ -59,9 +59,11 @@ typedef struct PLAYER
     Texture2D portrait;
     Texture2D body_texture;
     Texture2D sprite_sheet;
+    Texture2D back_sheet;
     std::array<State, NUM_ALLOWABLE_STATES> states;
     std::array<Stat_t, NUM_STATS> stats;
     Vec2 pos;
+    Vec2 dir;
     Rectangle ssr;
     anim_t current_animation;
     AnimState frame_state;
@@ -84,18 +86,20 @@ namespace player
         p.portrait = LoadTexture(PORTRAIT, name, portrait_size.x, portrait_size.y);
         p.body_texture = LoadTexture(BODY, name, player_size.x, player_size.y);
         p.sprite_sheet = LoadTexture(SPRITE_SHEET, name, INTERNAL_RES_X, INTERNAL_RES_Y);
+        p.back_sheet = LoadTexture(BACK_SHEET, name, INTERNAL_RES_X, INTERNAL_RES_Y);
         p.pos = {.x = INTERNAL_RES_X/2.0f, .y = INTERNAL_RES_Y/2};
         // edit
         Rectangle ssr = {};
         ssr.x = 0; 
         ssr.y = 0;
-        ssr.width = 100;
-        ssr.height = 120;
+        ssr.width = 50;
+        ssr.height = 110;
         p.ssr = ssr;
         p.current_animation = IDLE;
         p.frame_state = (AnimState){.frame = 0, .timer = 0};
         p.width = player_size.x;
         p.height = player_size.y;
+        p.dir = {0,1};
         return p;
     }
 

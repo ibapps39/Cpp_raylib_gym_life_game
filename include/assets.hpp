@@ -15,11 +15,12 @@ typedef enum ASSET
     BODY,
     PORTRAIT,
     LEVEL,
-    SPRITE_SHEET
+    SPRITE_SHEET,
+    BACK_SHEET
 } Asset_t;
 
 
-static std::array<std::string, 4> asset_t_ext = {"_body", "_portrait", "_level", "_sprite_sheet"};
+static std::array<std::string, 5> asset_t_ext = {"_body", "_portrait", "_level", "_sprite_sheet", "_back_sprite_sheet"};
 static std::array<const char *, 4> asset_t_path = {BODY_PATH, PORTRAIT_PATH, LEVELS_PATH, SPRITE_SHEET_PATH};
 
 inline std::string path_result;

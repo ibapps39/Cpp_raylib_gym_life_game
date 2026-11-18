@@ -1,9 +1,10 @@
 #pragma once
 #include "common.hpp"
+#include <iostream>
 
 namespace movement
 {
-    constexpr int speed = 150;
+    constexpr int speed = 250;
 inline Vec2 move_input()
 {
     Vec2 dir = {0};

@@ -18,25 +18,19 @@ namespace render_game
 {
     inline signed char flip()
     {
-        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_S))
+        if (IsKeyDown(KEY_A))
             return -1;
         return 1;
-    }
-    inline signed char flipf()
-    {
-        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_S))
-            return -1.0f;
-        return 1.0f;
     }
 
     void draw(Player &p)
     {
-        static signed char flip = flipf();
+        static signed char f = flip();
         // DrawTexture(p.body_texture, p.pos.x, p.pos.y, WHITE);
         Rectangle src = {};
         src.x = 0.0f;
         src.y = 0.0f;
-        src.width = flip * p.body_texture.width;
+        src.width = f * p.body_texture.width;
         src.height = p.body_texture.height;
         Rectangle dst = {};
         dst.x = p.pos.x;
@@ -57,8 +51,12 @@ namespace render_game
         dst.y = p.pos.y;
         dst.width = p.width;
         dst.height = p.height;
-
         DrawTexturePro(sprite_sheet, p.ssr, dst, {0, 0}, 0, WHITE);
+    }
+    void update_ssr(Rectangle& ssr)
+    {
+        static signed char f = flip();
+        ssr.width *= f;
     }
     master_render render_setup(const Vec2i internal_res, const Vec2i output_res = EXTERNAL_RES)
     {
@@ -84,6 +82,7 @@ namespace render_game
     }
     void render(master_render &mr, level &l, Player &player)
     {
+        update_ssr(player.ssr);
         if (IsWindowResized())
             update(mr);
         static bool draw_interface = false;
@@ -93,10 +92,10 @@ namespace render_game
         BeginTextureMode(mr.master_texture);
         draw(l);
         //draw(player);
+        if(player.dir.y < 0)
         draw(player.sprite_sheet, player);
-        DrawText(TextFormat("ssr info: x-%.2f\n y-%.2f\n w-%.2f\n h-%.2f\n", player.ssr.x, player.ssr.y, player.ssr.width, player.ssr.height), 10, mr.dst.height/2, 30, RED);
-        if (draw_interface)
-            interface::draw(player);
+
+        if (draw_interface) { interface::draw(player); }
         EndTextureMode();
 
         // draw the renderingtexture2d

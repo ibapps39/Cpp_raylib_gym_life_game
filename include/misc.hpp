@@ -13,7 +13,7 @@ inline Texture2D ldtx(Asset_t ast, std::string name, int sx, int sy)
 }
 
 
-void draw_track_photo(Texture2D t=ldtx(SPRITE_SHEET, "ian", INTERNAL_RES_X, INTERNAL_RES_Y))
+void draw_track_photo(Texture2D& t)
 {
     const Vector2 mv = GetMousePosition();
     static Vec2 pt = {0};
@@ -70,10 +70,10 @@ void draw_track_photo(Texture2D t=ldtx(SPRITE_SHEET, "ian", INTERNAL_RES_X, INTE
              (int)txt_pos.x, (int)txt_pos.y, 20, YELLOW);
     DrawCircle((int)pt.x, (int)pt.y, 10, RED);
     DrawCircle((int)pt2.x, (int)pt2.y, 10, GREEN);
-    for(auto s : points_s)
-    {
-        int y = (GetScreenHeight()*0.2f)+20*i;
-        DrawText(points_s[i].c_str(), 10, y, 20, WHITE);
-    }
+    // for(auto s : points_s)
+    // {
+    //     int y = (GetScreenHeight()*0.2f)+20*i;
+    //     DrawText(points_s[i].c_str(), 10, y, 20, WHITE);
+    // }
     EndDrawing();
 }

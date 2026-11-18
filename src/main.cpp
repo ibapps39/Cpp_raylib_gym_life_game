@@ -33,7 +33,7 @@ int main(void)
     };
     // have to call to load the texture properly
     lvl::load(INSTANCE.current_level, TEST_LEVEL);
-
+    //Texture2D t = ldtx(SPRITE_SHEET, "ian", INTERNAL_RES_X, INTERNAL_RES_Y);
     
     while (!WindowShouldClose())
     {
@@ -41,7 +41,7 @@ int main(void)
         if(IsKeyPressed(KEY_ESCAPE)) break;
         
         game::run(INSTANCE);
-        //draw_track_photo();
+        //draw_track_photo(t);
     }
     CloseWindow();
     return 0;

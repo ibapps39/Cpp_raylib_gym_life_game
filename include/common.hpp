@@ -57,3 +57,7 @@ extern int EXTERNAL_RESOLUTION_Y;
 extern Vec2i EXTERNAL_RES;
 
 #define WSAD_DOWN ((IsKeyDown(KEY_W))||(IsKeyDown(KEY_S))||(IsKeyDown(KEY_A))||(IsKeyDown(KEY_D)))
+#define AD_DOWN (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))
+#define SHIFT_DOWN (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
+
+#define INVENTORY_KEY KEY_I

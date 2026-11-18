@@ -1,27 +1,30 @@
 #pragma once
 #include "common.hpp"
 #include "assets.hpp"
+#include <map>
 #include <array>
 #include <vector>
 typedef enum ANIM_TYPES
 {
     IDLE,
     WALK,
-    RUN
+    RUN,
+    BACK
 } anim_t;
-static const unsigned char n_anim = 3;
+static const unsigned char n_anim = 4;
 
 inline anim_t determine_animation()
 {
-    if (WSAD_DOWN && IsKeyDown(KEY_RIGHT_SHIFT))
-    {
-        return RUN;
-    }
-    if (WSAD_DOWN && !IsKeyDown(KEY_RIGHT_SHIFT))
+
+        if(SHIFT_DOWN && WSAD_DOWN)
+        {
+            return RUN;
+        }
+        if(WSAD_DOWN)
         {
             return WALK;
         }
-    return IDLE;
+        return IDLE;
 }
 typedef struct FRAME_VECTOR
 {
@@ -61,9 +64,43 @@ AnimSpriteSheet IAN_IDLE
     .frame_timing = 0.12f,
     .row = 11
 };
-AnimSpriteSheet IAN_RUN
+AnimSpriteSheet IAN_WALK
 {
-    .type = IDLE,
+    .type = WALK,
+    .n_frames = 8,
+    .frames = {
+        {21,47},
+        {94,120},
+        {147,168},
+        {190,215},
+        {317,342},
+        {387,413},
+        {433,456},
+        {488,511}
+    },
+    .frame_timing = 0.12f,
+    .row = 31
+};
+AnimSpriteSheet IAN_RUN 
+{
+    .type = RUN,
+    .n_frames = 8,
+    .frames = {
+        {21,47},
+        {94,120},
+        {147,168},
+        {190,215},
+        {317,342},
+        {387,413},
+        {433,456},
+        {488,511}
+    },
+    .frame_timing = 0.12f,
+    .row = 51
+};
+AnimSpriteSheet IAN_RUN_BACK
+{
+    .type = RUN,
     .n_frames = 8,
     .frames = {
         {21,47},
@@ -78,10 +115,19 @@ AnimSpriteSheet IAN_RUN
     .frame_timing = 0.12f,
     .row = 11
 };
-
+typedef enum CHARACTERS
+{
+    IAN
+} ppl;
+constexpr unsigned char people_count = 1;
+std::array<AnimSpriteSheet, n_anim> ian_animations_array = {IAN_IDLE, IAN_WALK, IAN_RUN, IAN_RUN_BACK};
+std::array<std::array<AnimSpriteSheet, n_anim>, people_count> peeps_sheets = {ian_animations_array};
+AnimSpriteSheet& get_person_anisheet(ppl person, anim_t type)
+{
+    return peeps_sheets[person][type];
+}
 namespace anim
 {
-    std::array<AnimSpriteSheet, n_anim> animations_array = {IAN_IDLE};
     namespace sprite_sheet
     {
         Texture2D LoadTexture(const std::string name)
